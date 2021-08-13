@@ -22,7 +22,7 @@
 <div class="country-list">
   <a class="country" *ngFor="let country of countries$ | async" [routerLink]="'/country/' + country.id">
     <div class="country-flag">
-      <img width="450" height="300" [src]="country.flag" [alt]="country.name" />
+      <img width="450" height="300" [lazyLoad]="country.flag" [defaultImage]="defaultImage" [alt]="country.name" />
     </div>
     <div class="description">
       <div class="name title">{{country.name}}</div>

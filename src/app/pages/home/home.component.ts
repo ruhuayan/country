@@ -20,6 +20,8 @@ export class HomeComponent implements OnInit {
   region = "Filter By Region";
   dropdownShow = false;
   private timeid: number;
+  defaultImage =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII=";
   constructor(private store: Store) { }
 
   ngOnInit(): void {
