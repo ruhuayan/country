@@ -1,0 +1,64 @@
+<div class="container-head">
+  <button class="btn btn-back hasShadow" routerLink="/countries/">
+    <i class="fas fa-arrow-left"></i>
+    <span>Back</span>
+  </button>
+</div>
+
+<div class="country" *ngIf="country$ | async as country">
+  <div class="country-flag">
+    <img width="450" height="300" [src]="country.flag" [alt]="country.name" />
+  </div>
+  <div class="country-details">
+    <div class="country-name">{{country.name}}</div>
+    <div class="country-panel">
+      <div class="panel-left">
+        <div class="desc name">
+          <span class="label">Native Name: </span>
+          {{country.nativeName}}
+        </div>
+        <div class="population desc">
+          <span class="label">Population: </span>
+          {{country.population.toLocaleString()}}
+        </div>
+        <div class="region desc">
+          <span class="label">Region: </span>
+          {{country.region}}
+        </div>
+        <div class="region desc">
+          <span class="label">Sub Region: </span>
+          {{country.subregion}}
+        </div>
+        <div class="capital desc">
+          <span class="label">Capital: </span>
+          {{country.capital}}
+        </div>
+      </div>
+      <div class="panel-right">
+        <div class="domain desc">
+          <span class="label">Top Level Domain: </span>
+          ShowList(country.topLevelDomain)
+        </div>
+        <div class="region desc">
+          <span class="label">Currencies: </span>
+          {{country.currencies.join(", ")}}
+        </div>
+        <div class="capital desc">
+          <span class="label">Languages: </span>
+          {{country.languages.join(", ")}}
+        </div>
+      </div>
+    </div>
+
+    <div class="country-borders">
+      <span class="label">Border Countries: </span>
+
+      <ng-container *ngIf="dict$ | async as dict">
+        <button class="border hasShadow" *ngFor="let code of country.borders;" [routerLink]="['/country/', code]">
+          {{dict[code]}}
+        </button>
+      </ng-container>
+
+    </div>
+  </div>
+</div>

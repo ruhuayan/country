@@ -1,0 +1,58 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;600;800&display=swap");
+
+:root {
+  --blue-dark: hsl(209, 23%, 22%);
+  --blue-very-dark: hsl(207, 26%, 17%);
+  --blue-very-very-dark: hsl(200, 15%, 8%);
+  --gray: #999;
+  --gray-dark: hsl(0, 0%, 52%);
+  --gray-very-light: hsl(0, 0%, 98%);
+  --white: hsl(0, 0%, 100%);
+  --min-width: 375px;
+  --max-width: 1440px;
+  --min-height: 540px;
+  --page-text-size: 14px;
+  --header-text-size: 16px;
+
+  --header-text-color: hsl(200, 15%, 8%);
+  --text-color: hsl(0, 0%, 52%);
+  --bg-color: hsl(0, 0%, 98%);
+  --header-bg-color: hsl(0, 0%, 100%);
+
+  [data-theme="dark"] {
+    --header-text-color: hsl(0, 0%, 100%);
+    --text-color: hsl(0, 0%, 100%);
+    --bg-color: hsl(207, 26%, 17%);
+    --header-bg-color: hsl(209, 23%, 22%);
+  }
+}
+body {
+  margin: 0;
+  font-family: "Nunito Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s;
+  font-size: var(--page-text-size);
+}
+a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: var(--page-text-size);
+}
+
+.container {
+  width: 100%;
+  min-width: var(--min-width);
+  max-width: var(--max-width);
+  margin: auto;
+  padding: 1.5rem 2rem;
+  box-sizing: border-box;
+  padding-top: 5rem;
+}
+
+.hasShadow {
+  box-shadow: 0 0 3pt 0.2pt rgba(0, 0, 0, 0.2);
+}

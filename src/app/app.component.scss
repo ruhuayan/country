@@ -1,0 +1,16 @@
+.container {
+  width: 100%;
+  min-width: var(--min-width);
+  max-width: var(--max-width);
+  margin: auto;
+  padding: 1.5rem 2rem;
+  box-sizing: border-box;
+}
+
+svg#clouds {
+  position: fixed;
+  bottom: -160px;
+  left: -230px;
+  z-index: -10;
+  width: 1920px;
+}

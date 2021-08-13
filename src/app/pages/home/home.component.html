@@ -1,0 +1,40 @@
+<div class="search-form">
+  <div class="search-wrap">
+    <i class="fas fa-search"></i>
+    <input type="text" class="search-input hasShadow" placeholder="Search for a country..." [(ngModel)]="name"
+      (ngModelChange)="onInput()" />
+  </div>
+  <div class="search-filter">
+    <div class="drop-btn hasShadow search-input" (click)="dropdownShow=!dropdownShow">
+      <span>{{region}}</span>
+      <i class="fa-angle-down"></i>
+    </div>
+    <div class="dropdown hasShadow" [ngClass]="{show: dropdownShow}">
+      <ul class="menu-bar">
+        <li class="region" *ngFor="let region of regions$ | async" (click)="onSelectRegion(region)">
+          <span>{{region}}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="country-list">
+  <a class="country" *ngFor="let country of countries$ | async" [routerLink]="'/country/' + country.id">
+    <div class="country-flag">
+      <img width="450" height="300" [src]="country.flag" [alt]="country.name" />
+    </div>
+    <div class="description">
+      <div class="name title">{{country.name}}</div>
+      <div class="population desc">
+        <span>Population:</span> {{country.population.toLocaleString()}}
+      </div>
+      <div class="region desc">
+        <span>Region:</span> {{country.region}}
+      </div>
+      <div class="capital desc">
+        <span>Capital:</span> {{country.capital}}
+      </div>
+    </div>
+  </a>
+</div>
