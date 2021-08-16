@@ -37,7 +37,7 @@
       <div class="panel-right">
         <div class="domain desc">
           <span class="label">Top Level Domain: </span>
-          ShowList(country.topLevelDomain)
+          {{country.topLevelDomain.join(", ")}}
         </div>
         <div class="region desc">
           <span class="label">Currencies: </span>
@@ -54,7 +54,7 @@
       <span class="label">Border Countries: </span>
 
       <ng-container *ngIf="dict$ | async as dict">
-        <button class="border hasShadow" *ngFor="let code of country.borders;" [routerLink]="['/country/', code]">
+        <button class="border hasShadow" *ngFor="let code of country.borders;" routerLink="/country/{{code}}">
           {{dict[code]}}
         </button>
       </ng-container>

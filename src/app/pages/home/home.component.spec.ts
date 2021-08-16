@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import {Location} from '@angular/common';
 import { Country } from 'src/app/models/country';
 import { selectCountries, selectRegions } from 'src/app/states/country.selectors';
 
@@ -9,7 +11,7 @@ describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let store: MockStore;
-  
+
   const regions: string[] = ['asia', 'europe'];
   const countryList: Country[] = [{
     id: 'ARG',
@@ -28,6 +30,12 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [RouterTestingModule.withRoutes([
+        {
+          path: 'country/:id',
+          loadChildren: () => import('../../pages/country/country.module').then(m => m.CountryModule)
+        }
+      ])],
       providers: [
         provideMockStore({
           initialState: { state: { entities: [] } },
@@ -35,7 +43,7 @@ describe('HomeComponent', () => {
             { selector: selectCountries, value: countryList },
             { selector: selectRegions, value: regions },
           ],
-        })
+        }),
       ],
       declarations: [HomeComponent]
     })
@@ -51,6 +59,38 @@ describe('HomeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it(`should contain ${countryList.length} countries and click on Country should navigate to country page`, async () => {
+    
+    await fixture.whenStable();
+    const countryEls = fixture.nativeElement.querySelectorAll('.country-list .country');
+    expect(countryEls.length).toBeTruthy(countryList.length);
+
+    const location: Location = TestBed.inject(Location);
+    const index = 0;
+    countryEls[index].click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(location.path()).toBe(`/country/${countryList[index].id}`)
+  });
+
+  it('should have correct info on country', async () => {
+    fixture.detectChanges();
+    const index = 0, country = countryList[index];
+    const countryEl = fixture.nativeElement.querySelectorAll('.country-list .country')[index];
+
+    const name = countryEl.querySelector('.title').innerText;
+    expect(name).toBe(country.name);
+
+    const population = countryEl.querySelector('.population .right').innerText;
+    expect(population).toBe(country.population.toLocaleString());
+
+    const region = countryEl.querySelector('.region .right').innerText;
+    expect(region).toBe(country.region);
+
+    const capital = countryEl.querySelector('.capital .right').innerText;
+    expect(capital).toBe(country.capital);
   });
 
   it('should have options of 2 regions on filter dropdown', async () => {

@@ -20,20 +20,23 @@
 </div>
 
 <div class="country-list">
-  <a class="country" *ngFor="let country of countries$ | async" [routerLink]="'/country/' + country.id">
+  <a class="country" *ngFor="let country of countries$ | async" routerLink="/country/{{country.id}}">
     <div class="country-flag">
       <img width="450" height="300" [lazyLoad]="country.flag" [defaultImage]="defaultImage" [alt]="country.name" />
     </div>
     <div class="description">
       <div class="name title">{{country.name}}</div>
       <div class="population desc">
-        <span>Population:</span> {{country.population.toLocaleString()}}
+        <span>Population:</span> 
+        <span class="right">{{country.population.toLocaleString()}}</span>
       </div>
       <div class="region desc">
-        <span>Region:</span> {{country.region}}
+        <span>Region:</span>
+        <span class="right">{{country.region}}</span>
       </div>
       <div class="capital desc">
-        <span>Capital:</span> {{country.capital}}
+        <span>Capital:</span>
+        <span class="right">{{country.capital}}</span>
       </div>
     </div>
   </a>
