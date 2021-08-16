@@ -6,10 +6,7 @@ const getCountryFeatureState = createFeatureSelector<CountryState>(
 );
 
 const {
-    selectIds,
-    selectEntities,
     selectAll,
-    selectTotal,
 } = countryAdapter.getSelectors();
 
 export const selectCountries = createSelector(

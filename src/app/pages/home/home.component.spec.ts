@@ -1,30 +1,46 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
-import { of } from 'rxjs';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { Country } from 'src/app/models/country';
+import { selectCountries, selectRegions } from 'src/app/states/country.selectors';
 
 import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-
-  const storeMock = {
-    select: (...params) => {
-      if (params.includes('regions')) {
-        return of(["asia", "europe"]);
-      } else if (params.includes('category') && params.length === 1) {
-        return of(["asia", "europe"]);
-      }
-    }
-  };
+  let store: MockStore;
+  
+  const regions: string[] = ['asia', 'europe'];
+  const countryList: Country[] = [{
+    id: 'ARG',
+    name: 'Argentina',
+    nativeName: 'Argentina',
+    population: 43590400,
+    capital: 'Buenos Aires',
+    topLevelDomain: ['.ar'],
+    subregion: 'South America',
+    flag: 'https://restcountries.eu/data/arg.svg',
+    currencies: ['ARS'],
+    region: 'Americas',
+    languages: ['Spanish', 'Guaraní'],
+    borders: ['BOL', 'BRA', 'CHL', 'PRY', 'URY'],
+  }];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [{ provide: Store, useValue: storeMock }],
+      providers: [
+        provideMockStore({
+          initialState: { state: { entities: [] } },
+          selectors: [
+            { selector: selectCountries, value: countryList },
+            { selector: selectRegions, value: regions },
+          ],
+        })
+      ],
       declarations: [HomeComponent]
     })
       .compileComponents();
+      store = TestBed.inject(MockStore);
   });
 
   beforeEach(() => {
@@ -33,11 +49,31 @@ describe('HomeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', async () => {
-    await fixture.whenStable();
+  it('should create', () => {
     expect(component).toBeTruthy();
+  });
 
-    const regionsEl = HTMLElement = fixture.nativeElement.getElementsByClassName('menu-bar')[0].innerHTML;
-    console.log(regionsEl)
+  it('should have options of 2 regions on filter dropdown', async () => {
+    await fixture.whenStable();
+    const regionList = fixture.nativeElement.querySelectorAll('ul.menu-bar li');
+    expect(regionList.length).toBe(regions.length)
+  });
+
+  it('should filter dropdown show after a click on input and choose a region from dropdownlist', async () => {
+    spyOn(component, 'onSelectRegion');
+
+    const elem = fixture.nativeElement;
+    const filterInput = elem.querySelector('.search-filter .search-input');
+    filterInput.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const dropdown = elem.querySelector('.search-filter .dropdown');
+    expect(dropdown.classList).toContain('show');
+
+    const region = elem.querySelector('.search-filter .region');
+    region.click();
+
+    expect(component.onSelectRegion).toHaveBeenCalled();
   });
 });

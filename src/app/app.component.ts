@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ActionTypes } from './states/country.actions';
+import { loadCountriesAction } from './states/country.actions';
 import { selectLoading } from './states/country.selectors';
 
 @Component({
@@ -14,7 +14,7 @@ export class AppComponent implements OnInit{
 
   constructor(private store: Store) {}
   ngOnInit(): void {
-    this.store.dispatch({type: ActionTypes.LOAD_COUNTRIES});
-    this.loading$ = this.store.pipe(select(selectLoading));
+    this.store.dispatch(loadCountriesAction());
+    this.loading$ = this.store.select(selectLoading);
   }
 }

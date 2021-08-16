@@ -1,22 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { ActionTypes, CountryAction } from './country.actions';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import {
+  ActionTypes,
+  loadCountriesFailAction,
+  loadCountriesSuccessAction,
+  setLoadingAction,
+} from './country.actions';
+import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import { Country } from '../models/country';
 import { of } from 'rxjs';
 import { CountryService } from '../service/country.service';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class CountryEffects {
-  constructor(private actions$: Actions<CountryAction>, private countryService: CountryService) { }
+  constructor(
+    private store: Store,
+    private actions$: Actions,
+    private countryService: CountryService
+  ) {}
 
-  loadCountries$ = createEffect(() => this.actions$.pipe(
-    ofType(ActionTypes.LOAD_COUNTRIES),
-    mergeMap(() => this.countryService.getAll()
-      .pipe(
-        map((countries: Country[]) => ({ type: ActionTypes.LOAD_COUNTRIES_SUCCESS, payload: countries })),
-        catchError(() => of({ type: ActionTypes.LOAD_COUNTRIES_FAIL }))
-      ))
-  )
+  loadCountries$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ActionTypes.LOAD_COUNTRIES),
+      tap(() => this.store.dispatch(setLoadingAction({ loading: true }))),
+      mergeMap(() =>
+        this.countryService.getAll().pipe(
+          map((countries: Country[]) =>
+            loadCountriesSuccessAction({ countries })
+          ),
+          catchError(() => of(loadCountriesFailAction()))
+        )
+      )
+    )
   );
 }

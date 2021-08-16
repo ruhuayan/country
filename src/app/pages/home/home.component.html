@@ -9,7 +9,7 @@
       <span>{{region}}</span>
       <i class="fa-angle-down"></i>
     </div>
-    <div class="dropdown hasShadow" [ngClass]="{show: dropdownShow}">
+    <div [ngClass]="{'show': dropdownShow}" class="dropdown hasShadow">
       <ul class="menu-bar">
         <li class="region" *ngFor="let region of regions$ | async" (click)="onSelectRegion(region)">
           <span>{{region}}</span>

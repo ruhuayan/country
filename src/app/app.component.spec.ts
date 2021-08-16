@@ -1,32 +1,43 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { StoreModule } from '@ngrx/store';
-import { provideMockStore } from '@ngrx/store/testing';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { AppComponent } from './app.component';
+import { ActionTypes } from './states/country.actions';
+import { selectLoading } from './states/country.selectors';
 
 describe('AppComponent', () => {
+  let store: MockStore;
+  
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
       ],
-      providers: [provideMockStore({})],
+      providers: [provideMockStore({
+        initialState: { state: { loading: false, entities: []} },
+        selectors: [
+          { selector: selectLoading, value: true },
+        ],
+      })],
       declarations: [
         AppComponent
       ],
     }).compileComponents();
+    store = TestBed.inject(MockStore);
   });
 
-  it('should create the app', () => {
+  it('should dispatch action LOAD_COUNTRIES and has loading Icon', async () => {
+    const dispatchSpy = spyOn(store, 'dispatch').and.callThrough();
+
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
+    fixture.detectChanges();
     expect(app).toBeTruthy();
-  });
 
-  // it('should render title', () => {
-  //   const fixture = TestBed.createComponent(AppComponent);
-  //   fixture.detectChanges();
-  //   const compiled = fixture.nativeElement;
-  //   expect(compiled.querySelector('.content span').textContent).toContain('country app is running!');
-  // });
+    expect(dispatchSpy).toHaveBeenCalledWith({type: ActionTypes.LOAD_COUNTRIES});
+
+    await fixture.whenStable();
+    const loadingIconEl = fixture.nativeElement.getElementsByClassName('fa-spinner')[0];
+    expect(loadingIconEl).toBeTruthy();
+  });
 });
