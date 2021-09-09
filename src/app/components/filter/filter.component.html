@@ -1,0 +1,13 @@
+<div class="search-filter">
+    <div class="drop-btn hasShadow search-input" (click)="dropdownShow = !dropdownShow">
+        <span>{{ region }}</span>
+        <i class="fa-angle-down"></i>
+    </div>
+    <div [ngClass]="{ show: dropdownShow }" class="dropdown hasShadow">
+        <ul class="menu-bar">
+            <li class="region" *ngFor="let region of regions" (click)="onSelectRegion(region)">
+                <span>{{ region }}</span>
+            </li>
+        </ul>
+    </div>
+</div>
