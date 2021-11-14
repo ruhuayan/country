@@ -1,7 +1,7 @@
 export interface Country {
   id: string;
   name: string;
-  nativeName: string;
+  officialName: string;
   population: number;
   capital: string;
   region: string;

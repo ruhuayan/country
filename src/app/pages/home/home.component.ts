@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
     this.regions$ = this.store.select(selectRegions);
   }
 
-  onInput(): void { 
+  onInput(query: string): void { 
     if (this.timeid) clearTimeout(this.timeid);
     this.timeid = window.setTimeout(() => {
       const region = this.region === "Filter By Region" ? "" : this.region;
@@ -37,9 +37,8 @@ export class HomeComponent implements OnInit {
         map((countries: Country[]) => 
           countries.filter(c => new RegExp(this.name, "gi").test(c.name) && new RegExp(region, "gi").test(c.region))
         ),
-        // tap(countries => console.log(countries))
       )
-    }, 300);
+    }, 100);
   }
   onSelectRegion(region: string): void {
     this.region = region;

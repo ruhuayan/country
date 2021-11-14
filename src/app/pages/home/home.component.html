@@ -2,7 +2,7 @@
   <div class="search-wrap">
     <i class="fas fa-search"></i>
     <input type="text" class="search-input hasShadow" placeholder="Search for a country..." [(ngModel)]="name"
-      (ngModelChange)="onInput()" />
+      (ngModelChange)="onInput($event)" />
   </div>
   <div class="search-filter">
     <div class="drop-btn hasShadow search-input" (click)="dropdownShow=!dropdownShow">
